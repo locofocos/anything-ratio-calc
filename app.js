@@ -30,21 +30,21 @@ const Calculator = () => {
     <h2>Recipe</h2>
     <div>
       <span>Grounds (g)</span>
-      <input value={recipeCoffeeG} onChange={(e) => setRecipeCoffeeG(e.target.value)}/>
+      <input type="number" value={recipeCoffeeG} onChange={(e) => setRecipeCoffeeG(e.target.value)}/>
     </div>
     <div>
       <span>Water (oz)</span>
-      <input value={recipeWaterOz} onChange={(e) => setRecipeWaterOz(e.target.value, onRecipeChange)}/>
+      <input type="number" value={recipeWaterOz} onChange={(e) => setRecipeWaterOz(e.target.value, onRecipeChange)}/>
     </div>
     <div>
       <span>Servings</span>
-      <input value={recipeServings} onChange={(e) => setRecipeServings(e.target.value, onRecipeChange)}/>
+      <input type="number" value={recipeServings} onChange={(e) => setRecipeServings(e.target.value, onRecipeChange)}/>
     </div>
 
     <h2>Calculator</h2>
     <div>
       <span>Grounds (g)</span>
-      <input value={calculatedCoffeeG} onChange={(e) => {
+      <input type="number" value={calculatedCoffeeG} onChange={(e) => {
         setCalculatedCoffeeG(e.target.value)
         setCalculatedWaterOz(parseFloat(e.target.value) * parseFloat(recipeWaterOz) / parseFloat(recipeCoffeeG))
         setCalculatedServings(parseFloat(e.target.value) * parseFloat(recipeServings) / parseFloat(recipeCoffeeG))
@@ -52,7 +52,7 @@ const Calculator = () => {
     </div>
     <div>
       <span>Water (oz)</span>
-      <input value={calculatedWaterOz} onChange={(e) => {
+      <input type="number" value={calculatedWaterOz} onChange={(e) => {
         setCalculatedWaterOz(e.target.value)
         setCalculatedCoffeeG(parseFloat(e.target.value) * parseFloat(recipeCoffeeG) / parseFloat(recipeWaterOz))
         setCalculatedServings(parseFloat(e.target.value) * parseFloat(recipeServings) / parseFloat(recipeWaterOz))
@@ -60,7 +60,7 @@ const Calculator = () => {
     </div>
     <div>
       <span>Servings</span>
-      <input value={calculatedServings} onChange={(e) => {
+      <input type="number" value={calculatedServings} onChange={(e) => {
         setCalculatedServings(e.target.value)
         setCalculatedCoffeeG(parseFloat(e.target.value) * parseFloat(recipeCoffeeG) / parseFloat(recipeServings))
         setCalculatedWaterOz(parseFloat(e.target.value) * parseFloat(recipeWaterOz) / parseFloat(recipeServings))
