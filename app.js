@@ -2,6 +2,7 @@
 
 const App = () => {
   return <div>
+    <h1>Coffee ratio calculator</h1>
     <Calculator/>
   </div>
 }
@@ -10,28 +11,43 @@ const Calculator = () => {
 
   const [recipeCoffeeG, setRecipeCoffeeG] = React.useState(8)
   const [recipeWaterOz, setRecipeWaterOz] = React.useState(6)
+  const [recipeServings, setRecipeServings] = React.useState(1)
 
   const [calculatedCoffeeG, setCalculatedCoffeeG] = React.useState(recipeCoffeeG)
   const [calculatedWaterOz, setCalculatedWaterOz] = React.useState(recipeWaterOz)
+  const [calculatedServings, setCalculatedServings] = React.useState(recipeServings)
 
+
+  const onRecipeChange = () => {
+    // Assume that calculatedServings is what the user would want to base things off the most
+    setCalculatedCoffeeG(parseFloat(calculatedServings) * parseFloat(recipeCoffeeG) / parseFloat(recipeServings))
+    setCalculatedWaterOz(parseFloat(calculatedServings) * parseFloat(recipeWaterOz) / parseFloat(recipeServings))
+  }
+
+  React.useEffect(onRecipeChange, [recipeCoffeeG, recipeWaterOz, recipeServings])
 
   return <div>
-    <h2>Recipe values</h2>
+    <h2>Recipe</h2>
     <div>
-      <span>Coffee (g)</span>
+      <span>Grounds (g)</span>
       <input value={recipeCoffeeG} onChange={(e) => setRecipeCoffeeG(e.target.value)}/>
     </div>
     <div>
       <span>Water (oz)</span>
-      <input value={recipeWaterOz} onChange={(e) => setRecipeWaterOz(e.target.value)}/>
+      <input value={recipeWaterOz} onChange={(e) => setRecipeWaterOz(e.target.value, onRecipeChange)}/>
+    </div>
+    <div>
+      <span>Servings</span>
+      <input value={recipeServings} onChange={(e) => setRecipeServings(e.target.value, onRecipeChange)}/>
     </div>
 
-    <h2>Calculated values</h2>
+    <h2>Calculator</h2>
     <div>
-      <span>Coffee (g)</span>
+      <span>Grounds (g)</span>
       <input value={calculatedCoffeeG} onChange={(e) => {
         setCalculatedCoffeeG(e.target.value)
         setCalculatedWaterOz(parseFloat(e.target.value) * parseFloat(recipeWaterOz) / parseFloat(recipeCoffeeG))
+        setCalculatedServings(parseFloat(e.target.value) * parseFloat(recipeServings) / parseFloat(recipeCoffeeG))
       }}/>
     </div>
     <div>
@@ -39,6 +55,15 @@ const Calculator = () => {
       <input value={calculatedWaterOz} onChange={(e) => {
         setCalculatedWaterOz(e.target.value)
         setCalculatedCoffeeG(parseFloat(e.target.value) * parseFloat(recipeCoffeeG) / parseFloat(recipeWaterOz))
+        setCalculatedServings(parseFloat(e.target.value) * parseFloat(recipeServings) / parseFloat(recipeWaterOz))
+      }}/>
+    </div>
+    <div>
+      <span>Servings</span>
+      <input value={calculatedServings} onChange={(e) => {
+        setCalculatedServings(e.target.value)
+        setCalculatedCoffeeG(parseFloat(e.target.value) * parseFloat(recipeCoffeeG) / parseFloat(recipeServings))
+        setCalculatedWaterOz(parseFloat(e.target.value) * parseFloat(recipeWaterOz) / parseFloat(recipeServings))
       }}/>
     </div>
   </div>
