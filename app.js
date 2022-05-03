@@ -55,6 +55,7 @@ const Calculator = () => {
         setCalculatedCoffeeG(e.target.value)
         setCalculatedWaterOz(parseFloat(e.target.value) * parseFloat(recipeWaterOz) / parseFloat(recipeCoffeeG))
         setCalculatedServings(parseFloat(e.target.value) * parseFloat(recipeServings) / parseFloat(recipeCoffeeG))
+        setCalculatedHoney(parseFloat(e.target.value) * parseFloat(recipeHoney) / parseFloat(recipeCoffeeG))
       }}/>
     </div>
     <div className="medium-margin">
