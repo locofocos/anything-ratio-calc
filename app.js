@@ -142,6 +142,9 @@ const Calculator = () => {
         </div>
       )
     })}
+
+    <p>(change these ^ to scale the recipe up or down)</p>
+
   </div>
 }
 
