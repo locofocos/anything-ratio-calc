@@ -2,7 +2,7 @@
 
 const App = () => {
   return <div>
-    <h1>Coffee ratio calculator</h1>
+    <h1>Anything ratio calculator</h1>
     <Calculator/>
   </div>
 }
@@ -81,7 +81,7 @@ const Calculator = () => {
     }}>Add ingredient
     </button>
 
-    <h2>Calculator</h2>
+    <h2>Calculated values</h2>
 
     {ingredientLabels.map((ingredientLabel, i) => {
       return (
