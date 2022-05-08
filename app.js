@@ -21,7 +21,8 @@ const Calculator = () => {
   const allRecipeValuesSet = !recipeRatios.some(e => !e)
 
   const onRecipeChange = () => {
-    // Assume that the first input, probably "Servings = 1" (or similar) is what the user would want to base things off the most
+    // Assume that the first input, probably "Servings = 1" (or similar)
+    // is what the user would want to base other calculated values off of the most.
     if (!allRecipeValuesSet) {
       return
     }
@@ -58,12 +59,22 @@ const Calculator = () => {
         <div className="medium-margin" key={ingredientLabel}>
           <span>{ingredientLabel}</span>
           <input type="number" value={calculatedValues[i]} onChange={(e) => {
-            setCalculatedValues(() => {
-              let newCalculatedValues = recipeRatios.map((recipeRatio) => {
-                // for example, if you changed calculatedGrounds:
-                // calculatedWater = calculatedGrounds * recipeWater / recipeGrounds
-                return parseFloat(e.target.value) * parseFloat(recipeRatio) / parseFloat(recipeRatios[i])
-              })
+            setCalculatedValues((calculatedValues) => {
+              let newCalculatedValues
+
+              if (e.target.value === '') {
+                // avoid a parse exception + clearing out all calculated fields when deleting a single calculated field
+                newCalculatedValues = [...calculatedValues]
+              } else {
+                let inputValue = parseFloat(e.target.value)
+
+                newCalculatedValues = recipeRatios.map((recipeRatio) => {
+                  // for example, if you changed calculatedGrounds:
+                  // calculatedWater = calculatedGrounds * recipeWater / recipeGrounds
+                  return inputValue * parseFloat(recipeRatio) / parseFloat(recipeRatios[i])
+                })
+              }
+
               newCalculatedValues[i] = e.target.value
               return newCalculatedValues
             })
