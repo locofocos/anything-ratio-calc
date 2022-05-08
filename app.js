@@ -9,12 +9,12 @@ const App = () => {
 
 const Calculator = () => {
 
-  const [recipeRatios, setRecipeRatios] = React.useState([1, 8, 6, 13])
+  const [recipeRatios, setRecipeRatios] = React.useState([1, 8, 6, 5])
   const [ingredientLabels, setIngredientLabels] = React.useState([
     'Servings',
     'Grounds (g)',
     'Water (oz)',
-    'Honey (g)'
+    'Resulting coffee (oz)'
   ])
   const [calculatedValues, setCalculatedValues] = React.useState(recipeRatios)
 
