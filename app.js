@@ -40,8 +40,14 @@ const Calculator = () => {
     <h2>Recipe</h2>
     {ingredientLabels.map((ingredientLabel, i) => {
       return (
-        <div className="medium-margin" key={ingredientLabel}>
-          <span>{ingredientLabel}</span>
+        <div className="medium-margin" key={`recipe-ingredient-${i}`}>
+          <input type="text" value={ingredientLabel} onChange={(e) => {
+            setIngredientLabels((ingredientLabels) => {
+              let newIngredientLabels = [...ingredientLabels]
+              newIngredientLabels[i] = e.target.value
+              return newIngredientLabels
+            })
+          }}/>
           <input type="number" value={recipeRatios[i]} onChange={(e) => {
             setRecipeRatios(recipeRatios => {
               let newRecipeRatios = [...recipeRatios]
@@ -56,7 +62,7 @@ const Calculator = () => {
 
     {ingredientLabels.map((ingredientLabel, i) => {
       return (
-        <div className="medium-margin" key={ingredientLabel}>
+        <div className="medium-margin" key={`calculated-ingredient-${i}`}>
           <span>{ingredientLabel}</span>
           <input type="number" value={calculatedValues[i]} onChange={(e) => {
             setCalculatedValues((calculatedValues) => {
