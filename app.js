@@ -18,6 +18,37 @@ const Calculator = () => {
   ])
   const [calculatedValues, setCalculatedValues] = React.useState(recipeRatios)
 
+  React.useEffect(() => {
+    // Load from query params on page load
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+
+    if (params.ingredientLabels && params.recipeRatios) {
+      let parsedIngredientLabels = params.ingredientLabels.split("|")
+      let parsedRecipeRatios = params.recipeRatios.split("|")
+
+      if (parsedIngredientLabels.length === parsedRecipeRatios.length) {
+        setIngredientLabels(parsedIngredientLabels)
+        setRecipeRatios(parsedRecipeRatios)
+        setCalculatedValues(parsedRecipeRatios)
+        console.log(parsedRecipeRatios)
+      }
+    }
+  }, [])
+
+  React.useEffect(() => {
+    // Update the query params so users can share the URL, bookmark it, etc.
+    if ('URLSearchParams' in window) {
+      let searchParams = new URLSearchParams(window.location.search)
+      searchParams.set("ingredientLabels", ingredientLabels.join("|"));
+      searchParams.set("recipeRatios", recipeRatios.join("|"));
+
+      let newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+      history.pushState(null, '', newRelativePathQuery);
+    }
+
+  }, [recipeRatios, ingredientLabels])
+
   const allRecipeValuesSet = !recipeRatios.some(e => !e)
 
   const onRecipeChange = () => {
