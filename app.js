@@ -9,83 +9,68 @@ const App = () => {
 
 const Calculator = () => {
 
-  const [recipeServings, setRecipeServings] = React.useState(1)
-  const [recipeCoffeeG, setRecipeCoffeeG] = React.useState(8)
-  const [recipeWaterOz, setRecipeWaterOz] = React.useState(6)
-  const [recipeHoney, setRecipeHoney] = React.useState(13) // don't judge me
+  const [recipeRatios, setRecipeRatios] = React.useState([1, 8, 6, 13])
+  const [ingredientLabels, setIngredientLabels] = React.useState([
+    'Servings',
+    'Grounds (g)',
+    'Water (oz)',
+    'Honey (g)'
+  ])
+  const [calculatedValues, setCalculatedValues] = React.useState(recipeRatios)
 
-  const [calculatedServings, setCalculatedServings] = React.useState(recipeServings)
-  const [calculatedCoffeeG, setCalculatedCoffeeG] = React.useState(recipeCoffeeG)
-  const [calculatedWaterOz, setCalculatedWaterOz] = React.useState(recipeWaterOz)
-  const [calculatedHoney, setCalculatedHoney] = React.useState(recipeHoney)
-
+  const allRecipeValuesSet = !recipeRatios.some(e => !e)
 
   const onRecipeChange = () => {
-    // Assume that calculatedServings is what the user would want to base things off the most
-    setCalculatedCoffeeG(parseFloat(calculatedServings) * parseFloat(recipeCoffeeG) / parseFloat(recipeServings))
-    setCalculatedWaterOz(parseFloat(calculatedServings) * parseFloat(recipeWaterOz) / parseFloat(recipeServings))
-    setCalculatedHoney(parseFloat(calculatedServings) * parseFloat(recipeHoney) / parseFloat(recipeServings))
+    // Assume that the first input, probably "Servings = 1" (or similar) is what the user would want to base things off the most
+    if (!allRecipeValuesSet) {
+      return
+    }
+
+    setCalculatedValues(() => {
+      return recipeRatios.map((recipeRatio) => {
+        return parseFloat(calculatedValues[0]) * parseFloat(recipeRatio) / parseFloat(recipeRatios[0])
+      })
+    })
   }
 
-  React.useEffect(onRecipeChange, [recipeCoffeeG, recipeWaterOz, recipeHoney, recipeServings])
+  React.useEffect(onRecipeChange, [recipeRatios])
 
   return <div>
     <h2>Recipe</h2>
-    <div className="medium-margin">
-      <span>Servings</span>
-      <input type="number" value={recipeServings} onChange={(e) => setRecipeServings(e.target.value)}/>
-    </div>
-    <div className="medium-margin">
-      <span>Grounds (g)</span>
-      <input type="number" value={recipeCoffeeG} onChange={(e) => setRecipeCoffeeG(e.target.value)}/>
-    </div>
-    <div className="medium-margin">
-      <span>Water (oz)</span>
-      <input type="number" value={recipeWaterOz} onChange={(e) => setRecipeWaterOz(e.target.value)}/>
-    </div>
-    <div className="medium-margin">
-      <span>Honey (g)</span>
-      <input type="number" value={recipeHoney} onChange={(e) => setRecipeHoney(e.target.value)}/>
-    </div>
-
+    {ingredientLabels.map((ingredientLabel, i) => {
+      return (
+        <div className="medium-margin" key={ingredientLabel}>
+          <span>{ingredientLabel}</span>
+          <input type="number" value={recipeRatios[i]} onChange={(e) => {
+            setRecipeRatios(recipeRatios => {
+              let newRecipeRatios = [...recipeRatios]
+              newRecipeRatios[i] = e.target.value // not parsing at this point b/c that makes it hard to type decimals. So this stores strings.
+              return newRecipeRatios
+            })
+          }}/>
+        </div>)
+    })}
 
     <h2>Calculator</h2>
-    <div className="medium-margin">
-      <span>Servings</span>
-      <input type="number" value={calculatedServings} onChange={(e) => {
-        setCalculatedServings(e.target.value)
-        setCalculatedCoffeeG(parseFloat(e.target.value) * parseFloat(recipeCoffeeG) / parseFloat(recipeServings))
-        setCalculatedWaterOz(parseFloat(e.target.value) * parseFloat(recipeWaterOz) / parseFloat(recipeServings))
-        setCalculatedHoney(parseFloat(e.target.value) * parseFloat(recipeHoney) / parseFloat(recipeServings))
-      }}/>
-    </div>
-    <div className="medium-margin">
-      <span>Grounds (g)</span>
-      <input type="number" value={calculatedCoffeeG} onChange={(e) => {
-        setCalculatedCoffeeG(e.target.value)
-        setCalculatedWaterOz(parseFloat(e.target.value) * parseFloat(recipeWaterOz) / parseFloat(recipeCoffeeG))
-        setCalculatedServings(parseFloat(e.target.value) * parseFloat(recipeServings) / parseFloat(recipeCoffeeG))
-        setCalculatedHoney(parseFloat(e.target.value) * parseFloat(recipeHoney) / parseFloat(recipeCoffeeG))
-      }}/>
-    </div>
-    <div className="medium-margin">
-      <span>Water (oz)</span>
-      <input type="number" value={calculatedWaterOz} onChange={(e) => {
-        setCalculatedWaterOz(e.target.value)
-        setCalculatedCoffeeG(parseFloat(e.target.value) * parseFloat(recipeCoffeeG) / parseFloat(recipeWaterOz))
-        setCalculatedServings(parseFloat(e.target.value) * parseFloat(recipeServings) / parseFloat(recipeWaterOz))
-        setCalculatedHoney(parseFloat(e.target.value) * parseFloat(recipeHoney) / parseFloat(recipeWaterOz))
-      }}/>
-    </div>
-    <div className="medium-margin">
-      <span>Honey (g)</span>
-      <input type="number" value={calculatedHoney} onChange={(e) => {
-        setCalculatedHoney(e.target.value)
-        setCalculatedCoffeeG(parseFloat(e.target.value) * parseFloat(recipeCoffeeG) / parseFloat(recipeHoney))
-        setCalculatedServings(parseFloat(e.target.value) * parseFloat(recipeServings) / parseFloat(recipeHoney))
-        setCalculatedWaterOz(parseFloat(e.target.value) * parseFloat(recipeWaterOz) * parseFloat(recipeHoney))
-      }}/>
-    </div>
+
+    {ingredientLabels.map((ingredientLabel, i) => {
+      return (
+        <div className="medium-margin" key={ingredientLabel}>
+          <span>{ingredientLabel}</span>
+          <input type="number" value={calculatedValues[i]} onChange={(e) => {
+            setCalculatedValues(() => {
+              let newCalculatedValues = recipeRatios.map((recipeRatio) => {
+                // for example, if you changed calculatedGrounds:
+                // calculatedWater = calculatedGrounds * recipeWater / recipeGrounds
+                return parseFloat(e.target.value) * parseFloat(recipeRatio) / parseFloat(recipeRatios[i])
+              })
+              newCalculatedValues[i] = e.target.value
+              return newCalculatedValues
+            })
+          }}/>
+        </div>
+      )
+    })}
   </div>
 }
 
