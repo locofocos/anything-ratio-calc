@@ -9,15 +9,15 @@ const App = () => {
 
 const Calculator = () => {
 
+  const [recipeServings, setRecipeServings] = React.useState(1)
   const [recipeCoffeeG, setRecipeCoffeeG] = React.useState(8)
   const [recipeWaterOz, setRecipeWaterOz] = React.useState(6)
   const [recipeHoney, setRecipeHoney] = React.useState(13) // don't judge me
-  const [recipeServings, setRecipeServings] = React.useState(1)
 
+  const [calculatedServings, setCalculatedServings] = React.useState(recipeServings)
   const [calculatedCoffeeG, setCalculatedCoffeeG] = React.useState(recipeCoffeeG)
   const [calculatedWaterOz, setCalculatedWaterOz] = React.useState(recipeWaterOz)
   const [calculatedHoney, setCalculatedHoney] = React.useState(recipeHoney)
-  const [calculatedServings, setCalculatedServings] = React.useState(recipeServings)
 
 
   const onRecipeChange = () => {
@@ -32,6 +32,10 @@ const Calculator = () => {
   return <div>
     <h2>Recipe</h2>
     <div className="medium-margin">
+      <span>Servings</span>
+      <input type="number" value={recipeServings} onChange={(e) => setRecipeServings(e.target.value)}/>
+    </div>
+    <div className="medium-margin">
       <span>Grounds (g)</span>
       <input type="number" value={recipeCoffeeG} onChange={(e) => setRecipeCoffeeG(e.target.value)}/>
     </div>
@@ -43,12 +47,18 @@ const Calculator = () => {
       <span>Honey (g)</span>
       <input type="number" value={recipeHoney} onChange={(e) => setRecipeHoney(e.target.value)}/>
     </div>
-    <div className="medium-margin">
-      <span>Servings</span>
-      <input type="number" value={recipeServings} onChange={(e) => setRecipeServings(e.target.value)}/>
-    </div>
+
 
     <h2>Calculator</h2>
+    <div className="medium-margin">
+      <span>Servings</span>
+      <input type="number" value={calculatedServings} onChange={(e) => {
+        setCalculatedServings(e.target.value)
+        setCalculatedCoffeeG(parseFloat(e.target.value) * parseFloat(recipeCoffeeG) / parseFloat(recipeServings))
+        setCalculatedWaterOz(parseFloat(e.target.value) * parseFloat(recipeWaterOz) / parseFloat(recipeServings))
+        setCalculatedHoney(parseFloat(e.target.value) * parseFloat(recipeHoney) / parseFloat(recipeServings))
+      }}/>
+    </div>
     <div className="medium-margin">
       <span>Grounds (g)</span>
       <input type="number" value={calculatedCoffeeG} onChange={(e) => {
@@ -74,15 +84,6 @@ const Calculator = () => {
         setCalculatedCoffeeG(parseFloat(e.target.value) * parseFloat(recipeCoffeeG) / parseFloat(recipeHoney))
         setCalculatedServings(parseFloat(e.target.value) * parseFloat(recipeServings) / parseFloat(recipeHoney))
         setCalculatedWaterOz(parseFloat(e.target.value) * parseFloat(recipeWaterOz) * parseFloat(recipeHoney))
-      }}/>
-    </div>
-    <div className="medium-margin">
-      <span>Servings</span>
-      <input type="number" value={calculatedServings} onChange={(e) => {
-        setCalculatedServings(e.target.value)
-        setCalculatedCoffeeG(parseFloat(e.target.value) * parseFloat(recipeCoffeeG) / parseFloat(recipeServings))
-        setCalculatedWaterOz(parseFloat(e.target.value) * parseFloat(recipeWaterOz) / parseFloat(recipeServings))
-        setCalculatedHoney(parseFloat(e.target.value) * parseFloat(recipeHoney) / parseFloat(recipeServings))
       }}/>
     </div>
   </div>
