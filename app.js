@@ -55,15 +55,38 @@ const Calculator = () => {
               return newRecipeRatios
             })
           }}/>
+          <button onClick={() => {
+            // Remove ith element from everything
+
+            const arrayRemoveItem = (array, i) => {
+              const x = [...array]
+              x.splice(i, 1)
+              return x
+            }
+
+            setRecipeRatios((recipeRatios) => arrayRemoveItem(recipeRatios, i))
+            setCalculatedValues((calculatedValues) => arrayRemoveItem(calculatedValues, i))
+            setIngredientLabels((ingredientLabels) => arrayRemoveItem(ingredientLabels, i))
+          }}>x
+          </button>
         </div>)
     })}
+
+    <button onClick={() => {
+      setRecipeRatios((recipeRatios) => [...recipeRatios, 1])
+      setCalculatedValues((calculatedValues) => [...calculatedValues, null]) // onRecipeChange will fill this in
+      setIngredientLabels((ingredientLabels) => [...ingredientLabels, 'Ingredient'])
+
+      onRecipeChange()
+    }}>Add ingredient
+    </button>
 
     <h2>Calculator</h2>
 
     {ingredientLabels.map((ingredientLabel, i) => {
       return (
         <div className="medium-margin" key={`calculated-ingredient-${i}`}>
-          <span>{ingredientLabel}</span>
+          <span style={{ marginRight: 8 }}>{ingredientLabel}</span>
           <input type="number" value={calculatedValues[i]} onChange={(e) => {
             setCalculatedValues((calculatedValues) => {
               let newCalculatedValues
